@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+    <title>Your cart - Micro Center</title>
+{% endblock title %}
+{% block content %}
+    <div class="container shopping-cart">
+        <div class="block-heading">
+            <h2>Shopping Cart</h2>
+        </div>
+        <div class="content">
+            <div class="row">
+                <div class="col-md-12 col-lg-8">
+                    <div class="items">
+                        {% for item in items %}
+                        <div class="product">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <img class="img-fluid mx-auto d-block image" src="{{ item.product.imageURL }}">
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="info">
+                                        <div class="row">
+                                            <div class="col-md-5 product-name">
+                                                <div class="product-name">
+                                                    <a href="{{ item.product.get_absolute_url }}">{{ item.product.title }}</a>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 quantity">
+                                                <label>Quantity</label>
+                                                <div class="input-group">
+                                                    <a href="" class="update-cart" data-product="{{ item.product.id }}" data-action="remove"><input
+                                                           type="button" value="-"
+                                                           class="button-minus"></a>
+                                                    <input type="number" value="{{ item.quantity }}" name="quantity"
+                                                           class="quantity-field" disabled>
+                                                    <input data-product="{{ item.product.id }}" data-action="add"
+                                                           type="button" value="+"
+                                                           class="button-plus update-cart"></a>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 price">
+                                                <span>${{ item.product.price|floatformat:2 }}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="col-md-12 col-lg-4">
+                    <div class="summary">
+                        <h3>Summary</h3>
+                        <div class="summary-item"><span class="text">Subtotal
+                                {% if cartItems > 1 %}
+                                    ({{ cartItems }} items)
+                                {% else %}
+                                    ({{ cartItems }} item)
+                                {% endif %}
+                                </span><span class="price">${{ order.get_cart_total|floatformat:2 }}</span>
+                        </div>
+                        <div class="summary-item"><span class="text">Total</span><span class="price">${{ order.get_cart_total|floatformat:2 }}</span>
+                        </div>
+                        <div>
+                            <a href="{% url 'core:checkout' %}" type="button" class="btn btn-primary btn-lg btn-block">Checkout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+{% block script %}
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="{% static 'js/product.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/cart.js' %}"></script>
+{% endblock script %}

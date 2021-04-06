@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    <title>Shop - Micro Center</title>
+{% endblock title %}
+
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/shop.css' %}">
+{% endblock head %}
+
+{% block cart_items %}
+    {{ cartItems }}
+{% endblock cart_items %}
+
+{% block content %}
+    <section class="jumbotron text-center">
+        <div class="container">
+            <h1 class="jumbotron-heading">
+                {% if category_title %}
+                    {{ category_title }}
+                {% else %}
+                    CATEGORY
+                {% endif %}
+            </h1>
+        </div>
+    </section>
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-sm-3">
+                {% if categorys %}
+                <div class="card bg-light mb-3">
+                    <div class="card-header bg-info text-white text-uppercase"><i class="fa fa-list"></i> Categories
+                    </div>
+                    <ul class="list-group category_block">
+                        {% for category in categorys %}
+                        <li class="list-group-item"><a href="{{ category.get_category_url }}">{{ category.title }}</a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+                <button style="width: inherit;" class="btn btn-info btn-sm" type="button" data-toggle="collapse"
+                        data-target="#collapseExample"
+                        aria-expanded="false" aria-controls="collapseExample">
+                    Filter Product
+                </button>
+                <form method="get" class="p-2 collapse" id="collapseExample">
+                    {{ myFilter.form|crispy }}
+                    <button style="width: inherit;" class="btn btn-primary btn-sm" type="submit">Filter</button>
+                </form>
+            </div>
+            <div class="col">
+                <div class="row">
+                    {% for product in products %}
+                        <div class="col-12 col-md-6 col-lg-4" style="padding-bottom: 15px;">
+                            <div class="card">
+                                <img class="card-img-top thumbnail" src="{{ product.imageURL }}" alt="Card image cap">
+                                <div class="card-body">
+                                    <h6 class="card-title"><a href="{{ product.get_absolute_url }}" title="View Product">{{ product.title }}</a></h6>
+                                    <div class="row">
+                                        <div class="price" style="padding: 0 25%;">
+                                            <p>
+                                                {% if product.discount_price %}
+                                                    <span class="price_discounted">${{ product.price|floatformat:2 }}</span> ${{ product.discount_price|floatformat:2 }}
+                                                {% else %}
+                                                    ${{ product.price|floatformat:2 }}
+                                                {% endif %}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <div class="col-12">
+                        <nav aria-label="...">
+                            <ul class="pagination justify-content-center">
+                                {% if products.has_previous %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ products.previous_page_number }}">Previous</a>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#">Previous</a>
+                                    </li>
+                                {% endif %}
+
+                                {% for i in products.paginator.page_range %}
+                                    {% if products.number == i %}
+                                        <li class="page-item active">
+                                            <a class="page-link">{{ i }}<span class="sr-only">(current)</span></a>
+                                        </li>
+                                    {% elif i > products.number|add:'-2' and i < products.number|add:'2' %}
+                                        <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                                    {% endif %}
+                                {% endfor %}
+
+                                {% if products.has_next %}
+                                    <li class="page-item">
+                                        <a class="page-link" href="?page={{ products.next_page_number }}">Next</a>
+                                    </li>
+                                {% else %}
+                                    <li class="page-item disabled">
+                                        <a class="page-link" href="#">Next</a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

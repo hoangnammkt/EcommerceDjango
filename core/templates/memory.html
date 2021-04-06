@@ -1,0 +1,5 @@
+
+{% for ram in memory %}
+<a style="overflow: hidden;" class="dropdown-item" id="{{ ram.id }}" data-price="{{ram.price}}" title="{{ ram.title }}" data-idbefore="memory"
+   onClick="someFunc(this.id, this.title, this.price);"><img style="width: 50px !important; height: auto;" src="{{ ram.imageURL }}">{{ram.title}}</a>
+{% endfor %}

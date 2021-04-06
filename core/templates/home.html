@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    <title>Micro Center - Computer & Electronic</title>
+{% endblock title %}
+
+{% block cart_items %}
+    {{ cartItems }}
+{% endblock cart_items %}
+
+{% block content %}
+    <div id="demo" class="carousel slide" data-ride="carousel">
+        <!-- Indicators -->
+        <ul class="carousel-indicators">
+            <li data-target="#demo" data-slide-to="0" class="active"></li>
+            <li data-target="#demo" data-slide-to="1"></li>
+        </ul>
+        <!-- The slideshow -->
+        <div class="carousel-inner">
+            <div class="carousel-item active" style="height: 480px;">
+                <img src="/images/banner1.jpg" alt="" style="width: inherit;">
+            </div>
+            <div class="carousel-item" style="height: 480px;">
+                <img src="/images/banner2.jpg" alt="" style="width: inherit;">
+            </div>
+        </div>
+        <!-- Left and right controls -->
+        <a class="carousel-control-prev" href="#demo" data-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </a>
+        <a class="carousel-control-next" href="#demo" data-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </a>
+    </div>
+    <div class="container px-5 py-5 mx-auto">
+        <h3 class="h3" align="center">Our Products</h3>
+        <div class="row">
+            {% for product in products %}
+            <div class="col-md-3 col-sm-6">
+                <div class="product-grid4">
+                    <div class="product-image4">
+                        <a href="{{ product.get_absolute_url }}">
+                            <img class="pic-1" src="{{ product.imageURL }}"></a>
+                    </div>
+                    <div class="product-content">
+                        <p class="title"><a href="{{ product.get_absolute_url }}">{{ product.title }}</a></p>
+                        <div class="price">
+                            {% if product.discount_price %}
+                            <span>${{ product.price|floatformat:2 }}</span> ${{ product.discount_price|floatformat:2 }}
+                            {% else %}
+                            ${{ product.price|floatformat:2 }}
+                            {% endif %}
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="col-12">
+            <nav>
+                <ul class="pagination justify-content-center">
+                    {% if products.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ products.previous_page_number }}">Previous</a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#">Previous</a>
+                        </li>
+                    {% endif %}
+
+                    {% for i in products.paginator.page_range %}
+                        {% if products.number == i %}
+                            <li class="page-item active">
+                                <a class="page-link">{{ i }}<span class="sr-only">(current)</span></a>
+                            </li>
+                        {% elif i > products.number|add:'-2' and i < products.number|add:'2' %}
+                            <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if products.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ products.next_page_number }}">Next</a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#">Next</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+        </div>
+        <a href="{% url 'core:buildpc' %}"><img src="/images/builpc.jpg" alt="Build PC"
+                                                style="margin-left: auto; margin-right: auto; width: inherit; display: block;"></a>
+    </div>
+{% endblock content %}

@@ -1,0 +1,33 @@
+/*
+** Style Simple Ecommerce Theme for Bootstrap 4
+** Created by T-PHP https://t-php.fr/43-theme-ecommerce-bootstrap-4.html
+*/
+.category_block li:hover {
+    background-color: #007bff;
+}
+.category_block li:hover a {
+    color: #ffffff;
+}
+.category_block li a {
+    color: #343a40;
+}
+.pagination {
+    margin-top: 20px;
+}
+.row .price {
+    color: #d63031;
+    font-size: 16px;
+    font-weight: 500;
+    margin: 0 2px 15px 0;
+    display: block;
+}
+.row .price_discounted {
+    color: #343a40;
+    text-align: center;
+    text-decoration: line-through;
+    font-size: 14px;
+}
+.thumbnail {
+    width: 250px;
+    height: 250px;
+}

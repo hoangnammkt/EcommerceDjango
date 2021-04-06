@@ -1,0 +1,354 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/build.css' %}">
+{% endblock head %}
+
+{% block title %}
+    <title>Build your PC - Micro Center</title>
+{% endblock title %}
+
+{% block cart_items %}
+    {{ cartItems }}
+{% endblock cart_items %}
+
+{% block content %}
+    <div class="container py-5">
+        <div class="row text-center mb-5">
+            <div class="col-lg-7 mx-auto">
+                <h4 class="display-4">Building Your Custom PC</h4>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-7">
+                <div class="dropdown">
+                    <label>Motherboards (select one):</label>
+                    <button style="width: -webkit-fill-available; overflow: hidden;"
+                            class="btn btn-outline-dark dropdown-toggle" type="button"
+                            id="motherboards"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        -- Select Motherboards --
+                    </button>
+                    <div style="width: -webkit-fill-available; height: auto; max-height: 600px; overflow-x: hidden;"
+                         class="dropdown-menu col-md-6s"
+                         aria-labelledby="motherboards">
+                        {% for i in motherboards %}
+                        <a class="dropdown-item"
+                           data-options="{{i.id}}|{{i.socket}}|{{i.memory_type}}"
+                           data-price="{{i.price}}"
+                           id="data-mo-{{i.id}}" title="{{i.title}}" data-idbefore="motherboards"
+                           onClick="someFunc(this.id, this.title, this.price);"><img style="width: 50px !important; height: auto;"
+                                                                         src="{{ i.imageURL }}">{{i.title}}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+                <br>
+                <div class="dropdown">
+                    <label>Processors (select one):</label>
+                    <button style="width: -webkit-fill-available; overflow: hidden;"
+                            class="btn btn-outline-dark dropdown-toggle" type="button"
+                            id="processors"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        -- Select Processors --
+                    </button>
+                    <div id="processorsdata"
+                         style="width: -webkit-fill-available; height: auto; max-height: 600px; overflow-x: hidden;"
+                         class="dropdown-menu col-md-6s"
+                         aria-labelledby="processors">
+                        <strong style="color: red;" class="dropdown-item">Please select motherboard first !</strong>
+                    </div>
+                </div>
+                <br>
+                <div class="dropdown">
+                    <label>Memory (select one):</label>
+                    <button style="width: -webkit-fill-available; overflow: hidden;"
+                            class="btn btn-outline-dark dropdown-toggle" type="button"
+                            id="memory"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        -- Select Memory --
+                    </button>
+                    <div id="memorydata" style="width: -webkit-fill-available; height: auto; max-height: 600px; overflow-x: hidden;"
+                         class="dropdown-menu col-md-6s"
+                         aria-labelledby="memory">
+                        <strong style="color: red;" class="dropdown-item">Please select motherboard first !</strong>
+                    </div>
+                </div>
+                <br>
+                <div class="dropdown">
+                    <label>Data Storage (select one):</label>
+                    <button style="width: -webkit-fill-available; overflow: hidden;"
+                            class="btn btn-outline-dark dropdown-toggle" type="button"
+                            id="storage"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        -- Select Data Storage --
+                    </button>
+                    <div style="width: -webkit-fill-available; height: auto; max-height: 600px; overflow-x: hidden;"
+                         class="dropdown-menu col-md-6s"
+                         aria-labelledby="storage">
+                        {% for i in storage %}
+                        <a class="dropdown-item"
+                           id="{{i.id}}" title="{{ i.title }}" data-price="{{i.price}}" data-idbefore="storage"
+                           onClick="someFunc(this.id, this.title, this.price);"><img style="width: 50px !important; height: auto;"
+                                                                         src="{{ i.imageURL }}">{{i.title}}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+                <br>
+                <div class="dropdown">
+                    <label>Video Cards (select one):</label>
+                    <button style="width: -webkit-fill-available; overflow: hidden;"
+                            class="btn btn-outline-dark dropdown-toggle" type="button"
+                            id="videocard"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        -- Select Video Cards --
+                    </button>
+                    <div style="width: -webkit-fill-available; height: auto; max-height: 600px; overflow-x: hidden;"
+                         class="dropdown-menu col-md-6s"
+                         aria-labelledby="videocard">
+                        {% for i in videocard %}
+                        <a class="dropdown-item"
+                           id="{{i.id}}" title="{{ i.title }}" data-price="{{i.price}}" data-idbefore="videocard"
+                                              onClick="someFunc(this.id, this.title, this.price);"><img style="width: 50px !important; height: auto;" src="{{ i.imageURL }}">{{i.title}}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+                <br>
+                <div class="dropdown">
+                    <label>Power Supplies (select one):</label>
+                    <button style="width: -webkit-fill-available; overflow: hidden;"
+                            class="btn btn-outline-dark dropdown-toggle" type="button"
+                            id="power"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        -- Select Power Supplies --
+                    </button>
+                    <div style="width: -webkit-fill-available; height: auto; max-height: 600px; overflow-x: hidden;"
+                         class="dropdown-menu col-md-6s"
+                         aria-labelledby="power">
+                        {% for i in power %}
+                        <a class="dropdown-item"
+                           id="{{i.id}}" title="{{ i.title }}" data-price="{{i.price}}" data-idbefore="power"
+                                              onClick="someFunc(this.id, this.title, this.price);"><img style="width: 50px !important; height: auto;" src="{{ i.imageURL }}">{{i.title}}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+                <br>
+                <div class="dropdown">
+                    <label>Monitors (select one):</label>
+                    <button style="width: -webkit-fill-available; overflow: hidden;"
+                            class="btn btn-outline-dark dropdown-toggle" type="button"
+                            id="monitors"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        -- Select Monitors --
+                    </button>
+                    <div style="width: -webkit-fill-available; height: auto; max-height: 600px; overflow-x: hidden;"
+                         class="dropdown-menu col-md-6s"
+                         aria-labelledby="monitors">
+                        {% for i in monitors %}
+                        <a class="dropdown-item"
+                           id="{{i.id}}" title="{{ i.title }}" data-price="{{i.price}}" data-idbefore="monitors"
+                                              onClick="someFunc(this.id, this.title, this.price);"><img style="width: 50px !important; height: auto;" src="{{ i.imageURL }}">{{i.title}}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <ul class="list-group">
+                    <br>
+                    <!-- list group item-->
+                    <li class="list-group-item" id="motherboards-bill" style="display: none;">
+                        <!-- Custom content-->
+                        <div class="media align-items-lg-center flex-column flex-lg-row">
+                            <div class="media-body order-2 order-lg-1">
+                                <h6 class="mt-0 mb-2" id="motherboards-detail"></h6>
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <p><small>Motherboards: </small><span style="color: #17a2b8;" id="motherboards-price"></span></p>
+                                </div>
+                            </div>
+                        </div> <!-- End -->
+                    </li> <!-- End -->
+                    <li class="list-group-item" id="processors-bill" style="display: none;">
+                        <!-- Custom content-->
+                        <div class="media align-items-lg-center flex-column flex-lg-row">
+                            <div class="media-body order-2 order-lg-1">
+                                <h6 class="mt-0 mb-2" id="processors-detail"></h6>
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <p><small>Processors: </small><span style="color: #17a2b8;" id="processors-price"></span></p>
+                                </div>
+                            </div>
+                        </div> <!-- End -->
+                    </li> <!-- End -->
+                    <li class="list-group-item" id="memory-bill" style="display: none;">
+                        <!-- Custom content-->
+                        <div class="media align-items-lg-center flex-column flex-lg-row">
+                            <div class="media-body order-2 order-lg-1">
+                                <h6 class="mt-0 mb-2" id="memory-detail"></h6>
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <p><small>Memory (RAM): </small><span style="color: #17a2b8;" id="memory-price"></span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div> <!-- End -->
+                    </li> <!-- End -->
+                    <li class="list-group-item" id="storage-bill" style="display: none;">
+                        <!-- Custom content-->
+                        <div class="media align-items-lg-center flex-column flex-lg-row">
+                            <div class="media-body order-2 order-lg-1">
+                                <h6 class="mt-0 mb-2" id="storage-detail"></h6>
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <p><small>Storage/SSD: </small><span style="color: #17a2b8;" id="storage-price"></span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div> <!-- End -->
+                    </li> <!-- End -->
+                    <li class="list-group-item" id="videocard-bill" style="display: none;">
+                        <!-- Custom content-->
+                        <div class="media align-items-lg-center flex-column flex-lg-row">
+                            <div class="media-body order-2 order-lg-1">
+                                <h6 class="mt-0 mb-2" id="videocard-detail"></h6>
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <p><small>Video Card: </small><span style="color: #17a2b8;" id="videocard-price"></span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item" id="power-bill" style="display: none;">
+                        <div class="media align-items-lg-center flex-column flex-lg-row">
+                            <div class="media-body order-2 order-lg-1">
+                                <h6 class="mt-0 mb-2" id="power-detail"></h6>
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <p><small>Power: </small><span style="color: #17a2b8;" id="power-price"></span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="list-group-item" id="monitors-bill" style="display: none;">
+                        <div class="media align-items-lg-center flex-column flex-lg-row">
+                            <div class="media-body order-2 order-lg-1">
+                                <h6 class="mt-0 mb-2" id="monitors-detail"></h6>
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <p><small>Monitors: </small><span style="color: #17a2b8;" id="monitors-price"></span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                    <br>
+                    <form method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="motherboards" value="">
+                        <input type="hidden" name="processors" value="">
+                        <input type="hidden" name="memory" value="">
+                        <input type="hidden" name="storage" value="">
+                        <input type="hidden" name="videocard" value="">
+                        <input type="hidden" name="power" value="">
+                        <input type="hidden" name="monitors" value="">
+                        <button type="button" class="form-control btn btn-info btn-sm" data-toggle="modal"
+                                data-target="#exampleModalCenter">
+                            Continue
+                        </button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog"
+                             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">Your contact information</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <label>Your name:</label>
+                                        <input name="customername" type="text" class="form-control" value="" required>
+                                        <label>Your email:</label>
+                                        <input name="customermail" type="email" class="form-control" value="" required>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <input type="submit" value="Confirm your order" class="form-control btn btn-primary">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </ul>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block script %}
+    <script>
+            function someFunc(clicked_id, title, price) {
+                var idget = "#" + clicked_id
+                var idbefore = "#" + $(idget).data('idbefore')
+                var byid = '"' + idget + '"'
+                console.log(idbefore);
+                if (idbefore == "#motherboards") {
+                    $("#processors").text("-- Select Processors --");
+                    $("#memory").text("-- Select Memory --");
+                    $("#processors-bill").hide();
+                    $("#memory-bill").hide();
+                    reply_click(clicked_id);
+                }
+                var price = $(idget).data('price')
+                changetitle(title, idbefore, price);
+                setvalue(price, title, $(idget).data('idbefore'));
+            }
+
+            function reply_click(clicked_id) {
+                var iddd = "#" + clicked_id
+                var data = $(iddd).data('options')
+                var socket = data.split("|")[1]
+                var ram = data.split("|")[2]
+                var urlCPU = {% url 'core:ajax_load_cpu' %}
+                var urlRam = {% url 'core:ajax_load_ram' %}
+
+                console.log("Socket type:", socket)
+                console.log("Ram type:", ram)
+
+                $.ajax({
+                    url: urlCPU,
+                    data: {
+                        'socket': socket
+                    },
+                    success: function(data) {
+                        $("#processorsdata").html(data);
+                    }
+                });
+                $.ajax({
+                    url: urlRam,
+                    data: {
+                        'ramtype': ram
+                    },
+                    success: function(data) {
+                        $("#memorydata").html(data);
+                    }
+                });
+            };
+
+            function changetitle(title, idbefore, price){
+                console.log(title);
+                console.log(price);
+                $(idbefore).text(title);
+
+                var titlebill = idbefore + "-bill"
+                var titledetail = idbefore + "-detail"
+                var idprice = idbefore + "-price"
+                var price = "$" + price
+                $(idprice).text(price);
+                $(titledetail).text(title);
+                $(titlebill).show();
+            };
+
+            function setvalue(price, title, idbefore){
+                var inputname = "input[name=" + idbefore + "]"
+                var valueinput = title + "|" + "$" + price
+                $(inputname).val(valueinput);
+            }
+        </script>
+{% endblock %}

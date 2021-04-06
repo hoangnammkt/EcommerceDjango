@@ -1,0 +1,4 @@
+{% for cpu in processors %}
+<a class="dropdown-item" id="{{cpu.id}}" title="{{ cpu.title }}" data-price="{{cpu.price}}" data-idbefore="processors"
+   onClick="someFunc(this.id, this.title, this.price);"><img style="width: 50px !important; height: auto;" src="{{ cpu.imageURL }}">{{cpu.title}}</a>
+{% endfor %}

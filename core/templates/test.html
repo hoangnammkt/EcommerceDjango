@@ -1,0 +1,34 @@
+<div>
+    <iframe id="hidden_iframe" style="display: none;" name="hidden_iframe"></iframe>
+    <div>
+        <form name="contact-form" id="myForm" action="https://dia-chi-google-form/formResponse" method="POST"
+              target="hidden_iframe"> <!-- nhập địa chỉ Google form -->
+                <input class="tenlh" id="tenlh" name="entry.number1" required="" type="text" value=""
+                       placeholder="Họ và tên"><!-- nhập số họ và tên -->
+                <input class="emaillh" id="emaillh" name="entry.number2" required="" type="text" value=""
+                       placeholder="Địa chỉ email"><!-- nhập số email -->
+                <textarea class="noidunglh" id="noidunglh" cols="25" name="entry.number3" rows="5"
+                          placeholder="Nội dung gửi cho chúng tôi"></textarea><!-- nhập số nội dung -->
+            </div>
+            <div class="nut-gui-form-di">
+                <button id="nutgui" onclick="ihoan()">Gửi ngay cho chúng tôi</button>
+            </div>
+        </form>
+    </div>
+</div>
+<br>
+<script>
+    function ihoan() {
+        var frm = document.getElementsByName('contact-form')[0];
+        frm.submit();
+        frm.reset();
+    }
+</script>
+
+Chú ý:
+Bạn cần phải điền các thông số sau đây lấy từ biểu mẫu Google Forms, chú ý cách lấy ở bên dưới nhé.
+https://dia-chi-google-form/formResponse  thay thế đường dẫn này bằng đường dẫn Google Forms (chú ý dòng chữ màu xanh này phải đứng sau địa chỉ Google Forms nhé).
+Đại chỉ Google Forms thường có dạng: https://docs.google.com/forms/d/e/1FAIpQLSdY-XjlgrJEzxDmPDuDmIMnXkhxwY56Ga1wNMtG_MZxX0x0EA/viewform (phần màu xanh này bạn xóa đi nhé).
+number1 thay bằng số tương ứng với trường họ và tên.
+number2 thay bằng số tương ứng trường email.
+number3 thay bằng số tương ứng trường nội dung.
