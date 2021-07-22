@@ -1,0 +1,124 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block head %}
+  <link href="{% static 'dashboard/css/ruang-admin.min.css' %}" rel="stylesheet">
+  <link href="{% static 'dashboard/vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid" id="container-wrapper">
+          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Add Product</h1>
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="./">Home</a></li>
+              <li class="breadcrumb-item">Product</li>
+              <li class="breadcrumb-item active" aria-current="page">Add</li>
+            </ol>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              <!-- General Element -->
+              <div class="card mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold text-primary">Add Product</h6>
+                </div>
+                <div class="card-body">
+                  <form method="post" action="{% url 'core:add_product' %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group row">
+                      <div class="col-md-8">
+                        <label for="exampleFormControlTextarea1">Title</label>
+                        <input maxlength="95" class="form-control  mb-3" type="text" name="title" value="{{ product.title }}" required>
+                      </div>
+                      <div class="col-md-2">
+                        <label for="exampleFormControlTextarea1">Price</label>
+                        <input maxlength="4" class="form-control  mb-3" type="number" name="price" value="{{ product.price }}"
+                               required>
+                      </div>
+                      <div class="col-md-2">
+                        <label for="exampleFormControlTextarea1">Sale Price</label>
+                        <input maxlength="4" class="form-control  mb-3" type="number" name="discount_price"
+                               value="{{ product.discount_price }}">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-6">
+                        <label for="exampleFormControlSelect1">Select Category</label>
+                        <select class="form-control" id="CategorySelect" name="category" required>
+                          <option value="" disabled selected hidden>--- Select ---</option>
+                          {% for category in categories %}
+                              <option value="{{ category.id }}">{{ category }}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                      <div class="col-md-6">
+                        <label for="exampleFormControlSelect1">Brand Name</label>
+                        <select class="form-control" id="BrandSelect" name="brandname" required>
+                          {% for brandname in brands %}
+                              <option value="{{ brandname.id }}">{{ brandname }}</option>
+                          {% endfor %}
+                        </select>
+                      </div>
+                    </div>
+                    <div id="category_data"></div>
+                    <div class="form-group">
+                      <label for="exampleFormControlTextarea1">Description</label>
+                      <textarea style="font-size: 14.8px;" class="form-control" id="exampleFormControlTextarea1"
+                                rows="6"
+                                name="description">{{ product.description }}</textarea>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Thumbnail</label>
+                      <input accept="image/jpeg, image/png, image/jpg" type="file" class="form-control-file" id="exampleFormControlFile1" name="product_image" required>
+                    </div>
+                    <hr>
+                    <button id="btn-add" type="submit" class="btn btn-success btn-icon-split">
+                    <span class="icon text-white-50">
+                      <i class="fas fa-check"></i>
+                    </span>
+                      <span class="text">Update</span>
+                    </button>
+                    <a href="{% url 'core:product' %}" class="btn btn-secondary btn-icon-split float-right">
+                    <span class="icon text-white-50">
+                      <i class="far fa-window-close"></i>
+                    </span>
+                      <span class="text">Cancel</span>
+                    </a>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+{% endblock content %}
+
+{% block script %}
+<script>
+  $("#btn-add").hide();
+  $(function(){
+    $("#CategorySelect").on("change", function() {
+      if (this.value)
+        $("#btn-add").show();
+      else
+        $("#btn-add").hide();
+    });
+  });
+  $(function(){
+    $("#CategorySelect").on("change", function() {
+      var category = $("#CategorySelect").val();
+      $.ajax({
+          url: '{% url 'core:add_by_category' %}',
+          data: {
+              'category': category
+          },
+          success: function(data) {
+              $("#category_data").html(data);
+          }
+      });
+    });
+  });
+</script>
+{% endblock script %}

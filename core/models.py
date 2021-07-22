@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.template.defaultfilters import slugify
 from django.urls import reverse
 from django.db.models.signals import post_save
+import datetime
 
 
 # Category
@@ -147,7 +148,7 @@ class Customer(models.Model):
 # All order models
 class Order(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    date_order = models.DateTimeField(auto_now_add=True)
+    date_order = models.DateTimeField(default=datetime.datetime.now())
     complete = models.BooleanField(default=False, null=True, blank=False)
     transaction_id = models.CharField(max_length=200, null=True, unique=True)
 
@@ -171,7 +172,7 @@ class OrderItem(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     quantity = models.IntegerField(default=0, null=True, blank=True)
-    date_add = models.DateTimeField(auto_now_add=True)
+    date_add = models.DateTimeField(default=datetime.datetime.now())
 
     def __str__(self):
         return 'Order ' + str(self.order)
@@ -180,9 +181,13 @@ class OrderItem(models.Model):
     def get_total(self):
         total = self.product.price * self.quantity
         return total
-
-
 class Shipping(models.Model):
+    STATUS = (
+        ('P', 'Pending'),
+        ('D', 'Delivered'),
+        ('PO', 'Processing'),
+        ('S', 'Shipping')
+    )
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     phone = models.CharField(max_length=12, blank=True)
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
@@ -190,9 +195,10 @@ class Shipping(models.Model):
     city = models.CharField(max_length=30, blank=False)
     state = models.CharField(max_length=30, blank=False)
     zipcode = models.CharField(max_length=10, blank=False)
-    date_add = models.DateTimeField(auto_now_add=True)
+    date_add = models.DateTimeField(default=datetime.datetime.now())
+    status = models.CharField(max_length=2, choices=STATUS, default='P')
+
 
     def __str__(self):
         return self.address
-
 # End order models

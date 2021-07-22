@@ -1,0 +1,73 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block head %}
+  <link href="{% static 'dashboard/css/ruang-admin.min.css' %}" rel="stylesheet">
+  <link href="{% static 'dashboard/vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid" id="container-wrapper">
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">All Products</h1>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="./">Home</a></li>
+      <li class="breadcrumb-item active" aria-current="page">All Products</li>
+    </ol>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="card mb-4">
+        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+          <h6 class="m-0 font-weight-bold text-primary">All Products</h6>
+        </div>
+        <div class="table-responsive p-3">
+          <table class="table align-items-center table-flush table-hover" id="dataTableHover">
+            <thead class="thead-light">
+            <tr>
+              <th>Title</th>
+              <th>Price</th>
+              <th>Cetegory</th>
+              <th>Action</th>
+            </tr>
+            </thead>
+            <tfoot>
+            <tr>
+              <th>Title</th>
+              <th>Price</th>
+              <th>Category</th>
+              <th>Action</th>
+            </tr>
+            </tfoot>
+            <tbody>
+            {% for product in products %}
+            <tr>
+              <td><a href="#">{{ product.title|truncatechars:60 }}</a></td>
+              <td>{{ product.price }}</td>
+              <td>{{ product.category }}</td>
+              <td>
+                <a href="{% url 'core:edit_product' product.id %}" class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></a>
+                <a href="{% url 'core:delete_product' product.id %}" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
+              </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
+{% block script %}
+  <script src="{% static 'dashboard/vendor/datatables/jquery.dataTables.min.js' %}"></script>
+  <script src="{% static 'dashboard/vendor/datatables/dataTables.bootstrap4.min.js' %}"></script>
+  <!-- Page level custom scripts -->
+  <script>
+    $(document).ready(function () {
+      $('#dataTable').DataTable(); // ID From dataTable
+      $('#dataTableHover').DataTable(); // ID From dataTable with Hover
+    });
+  </script>
+{% endblock script %}

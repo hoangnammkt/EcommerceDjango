@@ -1,0 +1,26 @@
+<div class="form-group row">
+    <div class="col-md-6">
+        <label for="exampleFormControlSelect1">Socket</label>
+        <select class="form-control" id="exampleFormControlSelect1" name="socket">
+            {% for socket in sockets %}
+                {% if socket|lower == product.socket|lower %}
+                    <option value="{{ socket.id }}" selected>{{ socket }}</option>
+                {% else %}
+                    <option value="{{ socket.id }}">{{ socket }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-md-6">
+        <label for="exampleFormControlSelect1">Memory Type</label>
+        <select class="form-control" id="exampleFormControlSelect1" name="memory_type">
+            {% for type in memory_type %}
+                {% if type|lower == product.category|lower %}
+                    <option value="{{ type.id }}" selected>{{ type }}</option>
+                {% else %}
+                    <option value="{{ type.id }}">{{ type }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+    </div>
+</div>

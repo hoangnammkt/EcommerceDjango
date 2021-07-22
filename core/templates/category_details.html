@@ -46,7 +46,7 @@
                             {{ myFilter.form.brandname|as_crispy_field }}
                             {{ myFilter.form.screensize|as_crispy_field }}
                             {{ myFilter.form.resolution|as_crispy_field }}
-                        {% elif category_title|stringformat:'s' == "Memory (RAM)" %}
+                        {% elif category_title|stringformat:'s' == "Memory" %}
                             {{ myFilter.form.brandname|as_crispy_field }}
                             {{ myFilter.form.memory_type|as_crispy_field }}
                             {{ myFilter.form.capacity|as_crispy_field }}

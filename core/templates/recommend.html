@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<style>
+    .slidecontainer {
+        width: 100%;
+    }
+
+    .slider {
+        -webkit-appearance: none;
+        width: 100%;
+        height: 15px;
+        border-radius: 5px;
+        background: #d3d3d3;
+        outline: none;
+        opacity: 0.7;
+        -webkit-transition: .2s;
+        transition: opacity .2s;
+    }
+
+    .slider:hover {
+        opacity: 1;
+    }
+
+    .slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        background: #4CAF50;
+        cursor: pointer;
+    }
+
+    .slider::-moz-range-thumb {
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        background: #4CAF50;
+        cursor: pointer;
+    }
+    div.slidecontainer input{
+        padding: 0px;
+    }
+    div.slidecontainer button.sbudget{
+        width: 20%;
+    }
+</style>
+{% endblock head %}
+
+{% block title %}
+    <title>Build your PC - Micro Center</title>
+{% endblock title %}
+
+{% block cart_items %}
+    {{ cartItems }}
+{% endblock cart_items %}
+
+{% block content %}
+<div class='container py-5'>
+    <div class='row text-center mb-5'>
+        <div class='col-lg-7 mx-auto'>
+            <h4 class='display-4'>Recommend PC</h4>
+        </div>
+    </div>
+    <div class='row'>
+        <div class='slidecontainer'>
+            <input type='range' min='400' max='2500' class='slider' id='myRange' value='400'>
+            <p>Budget: $<span id='demo'></span></p>
+            <div align='center'>
+                <button onclick='crawl();' class='form-control btn btn-info btn-sm sbudget'>Submit</button>
+            </div>
+        </div>
+    </div>
+    <hr>
+    <div id='buildTable'>
+        <div class="progress">
+            <div id="myProgress" class="progress-bar progress-bar-striped bg-success active"></div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block script %}
+<script>
+    var slider = document.getElementById('myRange');
+    var output = document.getElementById('demo');
+    output.innerHTML = slider.value;
+
+    slider.oninput = function() {
+        output.innerHTML = this.value;
+        var salida = output.innerHTML;
+        return salida;
+    }
+
+    function crawl(){
+        progress();
+        var budget = $('#myRange').val();
+        $.ajax({
+            url: '{% url 'core:crawl' %}',
+            data: {
+                'budget': budget
+            },
+            success: function(data) {
+                $('#buildTable').html(data);
+            }
+        });
+    }
+    async function progress(){
+        for (let i=0; i<=95; i++) {
+            $('#myProgress').width(i+'%');
+            let delayres = await delay(55);
+        }
+    }
+    function delay(delayInms) {
+      return new Promise(resolve => {
+        setTimeout(() => {
+          resolve(2);
+        }, delayInms);
+      });
+    }
+</script>
+{% endblock %}

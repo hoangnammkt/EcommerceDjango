@@ -1,0 +1,171 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% load item_filter %}
+
+{% block head %}
+<link href="{% static 'dashboard/css/ruang-admin.min.css' %}" rel="stylesheet">
+{% endblock head %}
+
+{% block content %}
+<!-- Container Fluid-->
+<div class="container-fluid" id="container-wrapper">
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="./">Home</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+    </ol>
+  </div>
+
+  <div class="row mb-3">
+    <!-- Earnings (Monthly) Card Example -->
+    <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <div class="row align-items-center">
+            <div class="col mr-2">
+              <div class="text-xs font-weight-bold text-uppercase mb-1">Product</div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">{{ product }}</div>
+            </div>
+            <div class="col-auto">
+              <i class="fas fa-archive fa-2x text-primary"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Earnings (Annual) Card Example -->
+    <div class="col-xl-2 col-md-6 mb-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div class="text-xs font-weight-bold text-uppercase mb-1">Sales</div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">{{ sales }}</div>
+            </div>
+            <div class="col-auto">
+              <i class="fas fa-shopping-cart fa-2x text-success"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- New User Card Example -->
+    <div class="col-xl-2 col-md-6 mb-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div class="text-xs font-weight-bold text-uppercase mb-1">Delivered</div>
+              <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{ delivered }}</div>
+            </div>
+            <div class="col-auto">
+              <i class="fas fa-users fa-2x text-info"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Pending Requests Card Example -->
+    <div class="col-xl-2 col-md-6 mb-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <div class="row no-gutters align-items-center">
+            <div class="col mr-2">
+              <div class="text-xs font-weight-bold text-uppercase mb-1">Pending</div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800">{{ pending }}</div>
+            </div>
+            <div class="col-auto">
+              <i class="fas fa-comments fa-2x text-warning"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-md-6 mb-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <div class="row align-items-center">
+            <div class="col mr-2">
+              <div class="text-xs font-weight-bold text-uppercase mb-1">Earnings</div>
+              <div class="h5 mb-0 font-weight-bold text-gray-800" id="earnings">
+              </div>
+            </div>
+            <div class="col-auto">
+              <i class="fas fa-money-check-alt fa-2x text-info"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Invoice Example -->
+    <div class="col">
+      <div class="card">
+        <div class="table-responsive">
+          <table class="table align-items-center table-flush">
+            <thead class="thead-light">
+            <tr>
+              <th>Order ID</th>
+              <th>Customer</th>
+              <th>Item</th>
+              <th>Total</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for info in shipping %}
+            <tr>
+              <td><a href="#">#{{ info.id }}</a></td>
+              <td>{{ info.customer }}</td>
+              <td>
+                {% for item in order_item|filter_item:info.order %}
+                  {{ item.product|truncatechars:45 }}
+                {% endfor %}
+              </td>
+              <td id="total_order">
+                {% for item in order_item|filter_item:info.order %}
+                  ${{ item.product.price|total:item.quantity }}
+                {% endfor %}
+              </td>
+              <td>
+                <span class="badge badge-{% if info.status|lower == 'P'|lower %}danger{% elif info.status|lower == 'D'|lower %}success{% elif info.status|lower == 'S'|lower %}warning{% elif info.status|lower == 'PO'|lower %}info{% endif %}">
+                  {{ info.get_status_display }}
+                </span>
+              </td>
+              <td>
+                <a href="{% url 'core:view_order' info.id %}" class="btn btn-sm btn-primary" mb-checked="1" data-tip="">Detail</a>
+                <!--                <a href="#" class="btn btn-sm btn-primary"><i class="fas fa-edit"></i></a>-->
+                <!--                <a href="{% url 'core:delete_order' info.order.id %}" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>-->
+              </td>
+            </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <div class="card-footer"></div>
+      </div>
+    </div>
+  </div>
+  <!--Row-->
+</div>
+<!---Container Fluid-->
+
+  <script src="{% static 'dashboard/vendor/chart.js/Chart.min.js' %}"></script>
+  <script src="{% static 'dashboard/js/demo/chart-area-demo.js' %}"></script>
+{% endblock content %}
+
+{% block script %}
+<script>
+  $(document).ready(function () {
+    var b = 0;
+    {% for ship in ship_earn %}
+      {% for item in order_item|filter_item:ship.order %}
+        b+={{ item.product.price|total:item.quantity }}
+      {% endfor %}
+    {% endfor %}
+    var earn = '$' + String(b)
+    document.getElementById("earnings").innerHTML = earn;
+  });
+</script>
+{% endblock %}

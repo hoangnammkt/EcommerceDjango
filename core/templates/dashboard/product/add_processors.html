@@ -1,0 +1,18 @@
+<div class="form-group row">
+    <div class="col-md-6">
+        <label for="exampleFormControlSelect1">Socket</label>
+        <select class="form-control" id="exampleFormControlSelect1" name="socket">
+            {% for s in socket %}
+                <option value="{{ s.id }}">{{ s }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-md-6">
+        <label for="exampleFormControlSelect1">Seriescpu</label>
+        <select class="form-control" id="exampleFormControlSelect1" name="seriescpu">
+            {% for s in cpu %}
+                <option value="{{ s.id }}">{{ s }}</option>
+            {% endfor %}
+        </select>
+    </div>
+</div>

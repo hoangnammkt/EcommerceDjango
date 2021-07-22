@@ -1,0 +1,26 @@
+<div class="form-group row">
+    <div class="col-md-6">
+        <label for="exampleFormControlSelect1">Socket</label>
+        <select class="form-control" id="exampleFormControlSelect1" name="socket">
+            {% for s in sockets %}
+                {% if s|lower == product.socket|lower %}
+                    <option value="{{ s.id }}" selected>{{ s }}</option>
+                {% else %}
+                    <option value="{{ s.id }}">{{ s }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-md-6">
+        <label for="exampleFormControlSelect1">Seriescpu</label>
+        <select class="form-control" id="exampleFormControlSelect1" name="seriescpu">
+            {% for cpu in seriescpu %}
+                {% if cpu|lower == product.seriescpu|lower %}
+                    <option value="{{ cpu.id }}" selected>{{ cpu }}</option>
+                {% else %}
+                    <option value="{{ cpu.id }}">{{ cpu }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+    </div>
+</div>

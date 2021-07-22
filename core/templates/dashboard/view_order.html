@@ -1,0 +1,127 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+{% load item_filter %}
+
+{% block head %}
+  <link href="{% static 'dashboard/css/ruang-admin.min.css' %}" rel="stylesheet">
+  <link href="{% static 'dashboard/vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
+  <style>
+    div.ship_details div p span{
+      color: #e83e8c;
+      font-style: italic;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid" id="container-wrapper">
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">View Order</h1>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="./">Home</a></li>
+      <li class="breadcrumb-item">Order</li>
+      <li class="breadcrumb-item active" aria-current="page">View</li>
+    </ol>
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <!-- General Element -->
+      <div class="card mb-4">
+        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+          <h6 class="m-0 font-weight-bold text-primary">Order #{{ ship.id }} details</h6>
+        </div>
+        <div class="card-body">
+          <form method="post" action="{% url 'core:update_status' ship.id %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group row ship_details">
+              <div class="col-md-6">
+                <label><b>General</b></label>
+                <p>Date created: <span>{{ ship.date_add }}</span></p>
+                <p>Customer: <span>{{ ship.customer }}</span></p>
+                <p>Phone: <span>{{ ship.phone }}</span></p>
+                <div>
+                  Status:
+                  <select class="form-control form-control-sm" name="ship_status">
+                    {% for s in status %}
+                      {% if ship.status|lower == s|lower %}
+                        <option value="{{s}}" selected>
+                          {% if s|lower == 'P'|lower %}Pending{% endif %}
+                          {% if s|lower == 'D'|lower %}Delivered{% endif %}
+                          {% if s|lower == 'PO'|lower %}Processing{% endif %}
+                          {% if s|lower == 'S'|lower %}Shipping{% endif %}
+                        </option>
+                      {% else %}
+                        <option value="{{s}}" >
+                          {% if s|lower == 'P'|lower %}Pending{% endif %}
+                          {% if s|lower == 'D'|lower %}Delivered{% endif %}
+                          {% if s|lower == 'PO'|lower %}Processing{% endif %}
+                          {% if s|lower == 'S'|lower %}Shipping{% endif %}
+                        </option>
+                      {% endif %}
+                    {% endfor %}
+                  </select>
+                </div>
+
+              </div>
+              <div class="col-md-6">
+                <label><b>Address</b></label>
+                <p>Address: <span>{{ ship.address }}</span></p>
+                <p>City: <span>{{ ship.city }}</span></p>
+                <p>State: <span>{{ ship.state }}</span></p>
+                <p>Zipcode: <span>{{ ship.zipcode }}</span></p>
+              </div>
+            </div>
+            <hr>
+            <div class="form-group row ship_details">
+              <div class="col-md-9">
+                <label><b>Item</b></label>
+                <ul>
+                  {% for item in order_item|filter_item:ship.order %}
+                    <li><a href="{{ item.product.get_absolute_url }}">{{ item.product|truncatechars:75 }}</a></li>
+                  {% endfor %}
+                </ul>
+              </div>
+              <div class="col-md-1">
+                <label><b>Cost</b></label>
+                {% for item in order_item|filter_item:ship.order %}
+                  <p>${{ item.product.price }}</p>
+                {% endfor %}
+              </div>
+              <div class="col-md-1">
+                <label><b>Qty</b></label>
+                {% for item in order_item|filter_item:ship.order %}
+                  <p>x {{ item.quantity }}</p>
+                {% endfor %}
+              </div>
+              <div class="col-md-1">
+                <label><b>Total</b></label>
+                {% for item in order_item|filter_item:ship.order %}
+                  <p>${{ item.product.price|total:item.quantity }}</p>
+                {% endfor %}
+              </div>
+            </div>
+            <hr>
+            <button type="submit" class="btn btn-success btn-icon-split">
+                    <span class="icon text-white-50">
+                      <i class="fas fa-check"></i>
+                    </span>
+              <span class="text">Update</span>
+            </button>
+            <a href="{% url 'core:all_orders' %}" class="btn btn-secondary btn-icon-split float-right">
+                    <span class="icon text-white-50">
+                      <i class="far fa-window-close"></i>
+                    </span>
+              <span class="text">Cancel</span>
+            </a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
+{% block script %}
+
+{% endblock script %}

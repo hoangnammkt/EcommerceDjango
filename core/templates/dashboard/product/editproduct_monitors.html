@@ -1,0 +1,26 @@
+<div class="form-group row">
+    <div class="col-md-6">
+        <label for="exampleFormControlSelect1">Screensize</label>
+        <select class="form-control" id="exampleFormControlSelect1" name="screensize">
+            {% for sz in screensize %}
+                {% if sz|lower == product.screensize|lower %}
+                    <option value="{{ sz.id }}" selected>{{ sz }}</option>
+                {% else %}
+                    <option value="{{ sz.id }}">{{ sz }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-md-6">
+        <label for="exampleFormControlSelect1">Resolution</label>
+        <select class="form-control" id="exampleFormControlSelect1" name="resolution">
+            {% for res in resolution %}
+                {% if res|lower == product.resolution|lower %}
+                    <option value="{{ res.id }}" selected>{{ res }}</option>
+                {% else %}
+                    <option value="{{ res.id }}">{{ res }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+    </div>
+</div>

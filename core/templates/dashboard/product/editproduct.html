@@ -1,0 +1,121 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block head %}
+  <link href="{% static 'dashboard/css/ruang-admin.min.css' %}" rel="stylesheet">
+  <link href="{% static 'dashboard/vendor/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid" id="container-wrapper">
+          <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Edit Product</h1>
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="./">Home</a></li>
+              <li class="breadcrumb-item">Product</li>
+              <li class="breadcrumb-item active" aria-current="page">Edit</li>
+            </ol>
+          </div>
+
+          <div class="row">
+            <div class="col">
+              <!-- General Element -->
+              <div class="card mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                  <h6 class="m-0 font-weight-bold text-primary">Products</h6>
+                </div>
+                <div class="card-body">
+                  <form method="post" action="{% url 'core:update_product' product.id %}" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group row">
+                      <div class="col-md-8">
+                        <label for="exampleFormControlTextarea1">Title</label>
+                        <input class="form-control  mb-3" type="text" name="title" value="{{ product.title }}" required>
+                      </div>
+                      <div class="col-md-2">
+                        <label for="exampleFormControlTextarea1">Price</label>
+                        <input class="form-control  mb-3" type="number" name="price" value="{{ product.price }}"
+                               required>
+                      </div>
+                      <div class="col-md-2">
+                        <label for="exampleFormControlTextarea1">Sale Price</label>
+                        <input class="form-control  mb-3" type="number" name="discount_price"
+                               value="{{ product.discount_price }}">
+                      </div>
+                    </div>
+                    <div class="form-group row">
+                      <div class="col-md-6">
+                        <label for="exampleFormControlSelect1">Select Category</label>
+                        <select class="form-control" id="exampleFormControlSelect1" name="category">
+                          {% for category in categories %}
+                            {% if category|lower == product.category|lower %}
+                              <option value="{{ category.id }}" selected>{{ category }}</option>
+                            {% else %}
+                              <option value="{{ category.id }}">{{ category }}</option>
+                            {% endif %}
+                          {% endfor %}
+                        </select>
+                      </div>
+                      <div class="col-md-6">
+                        <label for="exampleFormControlSelect1">Brand Name</label>
+                        <select class="form-control" id="exampleFormControlSelect1" name="brandname">
+                          {% for brandname in brands %}
+                            {% if brandname|lower == product.brandname|lower %}
+                              <option value="{{ brandname.id }}" selected>{{ brandname }}</option>
+                            {% else %}
+                              <option value="{{ brandname.id }}">{{ brandname }}</option>
+                            {% endif %}
+                          {% endfor %}
+                        </select>
+                      </div>
+                    </div>
+                    {% if product.category|lower == 'motherboards'|lower %}
+                      {% include "dashboard/product/editproduct_motherboards.html" %}
+                    {% elif product.category|lower == 'monitors'|lower %}
+                      {% include "dashboard/product/editproduct_monitors.html" %}
+                    {% elif product.category|lower == 'processors'|lower %}
+                      {% include "dashboard/product/editproduct_processors.html" %}
+                    {% elif product.category|lower == 'memory'|lower %}
+                      {% include "dashboard/product/editproduct_memory.html" %}
+                    {% elif product.category|lower == 'Power Supplies'|lower %}
+                      {% include "dashboard/product/editproduct_power.html" %}
+                    {% elif product.category|lower == 'Video Cards'|lower %}
+                      {% include "dashboard/product/editproduct_card.html" %}
+                    {% elif product.category|lower == 'Data Storage'|lower %}
+                      {% include "dashboard/product/editproduct_storage.html" %}
+                    {% endif %}
+                    <div class="form-group">
+                      <label for="exampleFormControlTextarea1">Description</label>
+                      <textarea style="font-size: 14.8px;" class="form-control" id="exampleFormControlTextarea1"
+                                rows="6"
+                                name="description">{{ product.description }}</textarea>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="exampleFormControlFile1">Thumbnail</label>
+                      <input type="file" class="form-control-file" id="exampleFormControlFile1" name="product_image">
+                    </div>
+                    <hr>
+                    <button type="submit" class="btn btn-success btn-icon-split">
+                    <span class="icon text-white-50">
+                      <i class="fas fa-check"></i>
+                    </span>
+                      <span class="text">Update</span>
+                    </button>
+                    <a href="{% url 'core:product' %}" class="btn btn-secondary btn-icon-split float-right">
+                    <span class="icon text-white-50">
+                      <i class="far fa-window-close"></i>
+                    </span>
+                      <span class="text">Cancel</span>
+                    </a>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+{% endblock content %}
+
+{% block script %}
+
+{% endblock script %}

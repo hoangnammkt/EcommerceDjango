@@ -1,0 +1,14 @@
+<div class="form-group row">
+    <div class="col">
+        <label for="exampleFormControlSelect1">Wattage</label>
+        <select class="form-control" id="exampleFormControlSelect1" name="wattage">
+            {% for s in wattage %}
+                {% if s|lower == product.wattage|lower %}
+                    <option value="{{ s.id }}" selected>{{ s }}</option>
+                {% else %}
+                    <option value="{{ s.id }}">{{ s }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+    </div>
+</div>
