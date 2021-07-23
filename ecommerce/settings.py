@@ -95,7 +95,7 @@ DATABASES = {
         'USER': 'deploy', # deploy postgres
         'PASSWORD': '0961032458',
         'HOST': 'localhost',
-        'PORT': '1999',
+        'PORT': '8000', #1999
     }
 }
 
