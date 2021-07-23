@@ -91,14 +91,14 @@ AUTHENTICATION_BACKENDS = [
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'django', #ecommerce
-        'USER': 'postgres',
+        'NAME': 'ecommerce',
+        'USER': 'deploy', # deploy postgres
         'PASSWORD': '0961032458',
         'HOST': 'localhost',
         'PORT': '1999',
     }
 }
-# django
+
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
 
@@ -141,10 +141,3 @@ SITE_ID = 1
 
 # Crispy
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
-
-# Smtp
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'hoangnam921@gmail.com'
-EMAIL_HOST_PASSWORD = 'fntstqwatixxuguv'
-EMAIL_USE_SSL = True
-EMAIL_PORT = 465
